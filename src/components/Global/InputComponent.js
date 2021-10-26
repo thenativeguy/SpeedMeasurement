@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal:5,
     borderRadius: 10,
-    backgroundColor: LAYOUT.COLORS.RED
+    backgroundColor: LAYOUT.COLORS.RED,
+    fontSize: 20,
+    color: '#fff',
+    fontFamily: LAYOUT.FONTS.BOLD,
   },
 });
