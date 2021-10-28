@@ -1,7 +1,5 @@
-import {NavigationContainer} from '@react-navigation/native';
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
-  Button,
   StyleSheet,
   Text,
   View,
@@ -9,15 +7,16 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import {LAYOUT} from '../layout';
 import InputComponent from '../components/Global/InputComponent';
 import LoginButton from '../components/Login/LoginButton';
-import {LAYOUT} from '../layout';
-import {ContextAuth} from '../context/AuthContext';
+import { ContextAuth } from '../context/AuthContext';
 
-const Login = ({navigation}) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const {login} = useContext(ContextAuth);
+const Signup = ({navigation}) => {
+  const [email, setemail] = useState();
+  const [password, setpassword] = useState();
+
+  const {register} = useContext(ContextAuth)
   return (
     //Main View
     <View style={styles.mainView}>
@@ -27,9 +26,9 @@ const Login = ({navigation}) => {
         style={styles.backgroundImageStyle}
       />
       {/* Main Heading */}
-      <View style={{alignItems: 'center', marginBottom: LAYOUT.HEIGHT * 0.05}}>
-        <Text style={styles.firstHeading}>Are You</Text>
-        <Text style={styles.secondHeading}>fast as a rabbit?</Text>
+      <View style={{alignItems: 'center', marginTop: LAYOUT.HEIGHT * 0.06}}>
+        <Text style={styles.firstHeading}>New User?</Text>
+        <Text style={styles.secondHeading}>Register</Text>
       </View>
       {/* Input form fields View */}
       <View style={styles.inputTitleMainView}>
@@ -37,7 +36,10 @@ const Login = ({navigation}) => {
         {/* <View style={styles.inputTitleSecondaryView}>
           <Image
             source={require('../assets/images/icons/user.png')}
-            style={styles.headingIconsStyle}
+            style={[
+              styles.headingIconsStyle,
+              {backgroundColor: '#fff', borderRadius: 50},
+            ]}
           />
           <Text style={styles.inputTitleTextStyle}>Username</Text>
         </View>
@@ -52,7 +54,7 @@ const Login = ({navigation}) => {
         </View>
         <InputComponent
           value={email}
-          onChangeText={userEmail => setEmail(userEmail)}
+          onChangeText={userEmail => setemail(userEmail)}
           placeholder={'alexhiggins@abc.com'}
         />
         {/* Password */}
@@ -64,41 +66,42 @@ const Login = ({navigation}) => {
             />
             <Text style={styles.inputTitleTextStyle}>Password</Text>
           </View>
-
+          <InputComponent value={password} onChangeText={userPassword => setpassword(userPassword)} placeholder={'Password'} secureTextEntry={true} />
+        </View>
+        {/*Confirm Password */}
+        {/* <View style={{alignSelf: 'center'}}>
+          <View style={styles.inputTitleSecondaryView}>
+            <Image
+              source={require('../assets/images/icons/password.png')}
+              style={styles.headingIconsStyle}
+            />
+            <Text style={styles.inputTitleTextStyle}>Confirm Password</Text>
+          </View>
           <InputComponent
-            value={password}
-            onChangeText={userPassword => setPassword(userPassword)}
-            placeholder={'Password'}
+            placeholder={'Confirm Password'}
             secureTextEntry={true}
           />
-        </View>
-        {/* Registeration link */}
+        </View> */}
+        {/* Login link */}
         <View style={{marginTop: LAYOUT.HEIGHT * 0.02, flexDirection: 'row'}}>
-          <Text style={styles.registerLinkStyle}>No account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={styles.registerLinkStyle}> Register here</Text>
+          <Text style={styles.LoginLinkStyle}>Already have an account?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.LoginLinkStyle}> Login here</Text>
           </TouchableOpacity>
         </View>
         {/* Login Button */}
         <View>
           <LoginButton
-            title={'Login'}
-            pressHandler={() => login(email, password)}
+            title={'Register'}
+            pressHandler={() => register(email, password)}
           />
         </View>
-      </View>
-      {/* Logo */}
-      <View style={styles.logoView}>
-        <Image
-          source={require('../assets/images/logo.png')}
-          style={styles.logoStyle}
-        />
       </View>
     </View>
   );
 };
 
-export default Login;
+export default Signup;
 
 const styles = StyleSheet.create({
   mainView: {
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
   },
   inputTitleSecondaryView: {
     flexDirection: 'row',
-    marginVertical: 10,
+    marginVertical: 5,
     alignItems: 'center',
   },
   headingIconsStyle: {
@@ -140,25 +143,14 @@ const styles = StyleSheet.create({
   firstHeading: {
     fontFamily: LAYOUT.FONTS.BOLD,
     color: '#fff',
-    fontSize: 42,
+    fontSize: 34,
   },
   secondHeading: {
     fontFamily: LAYOUT.FONTS.BOLD,
     color: '#000',
-    fontSize: 34,
+    fontSize: 30,
   },
-  logoView: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 30,
-    paddingVertical: 10,
-    borderRadius: 50,
-    marginBottom: LAYOUT.HEIGHT * 0.07,
-  },
-  logoStyle: {
-    width: LAYOUT.WIDTH * 0.3,
-    height: LAYOUT.WIDTH * 0.1,
-  },
-  registerLinkStyle: {
+  LoginLinkStyle: {
     fontFamily: LAYOUT.FONTS.BOLD,
     fontSize: 16,
     color: '#000',

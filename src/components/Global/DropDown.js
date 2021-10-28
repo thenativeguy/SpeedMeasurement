@@ -22,6 +22,7 @@ const DropDown = () => {
         setOpen={setOpen}
         setValue={setValue}
         setItems={setItems}
+        placeholder={'Select Checkpoint'}
         ArrowDownIconComponent={() => <MaterialIcons name = "arrow-drop-down" size={40} color="#fff" />}
         ArrowUpIconComponent={()=> <MaterialIcons name="arrow-drop-up" size={40} color="#fff" />}
         dropDownContainerStyle={{backgroundColor: LAYOUT.COLORS.RED}}

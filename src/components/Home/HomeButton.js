@@ -22,15 +22,15 @@ export default HomeButton;
 
 const styles = StyleSheet.create({
   btnImageStyle: {
-    width: LAYOUT.WIDTH * 0.075,
-    height: LAYOUT.WIDTH * 0.075,
+    width: LAYOUT.WIDTH * 0.07,
+    height: LAYOUT.WIDTH * 0.07,
   },
   btnTextStyle: {
     color: '#fff',
     fontSize: 25,
     position: 'absolute',
     alignSelf: 'center',
-    top: LAYOUT.WIDTH * 0.22,
+    bottom: LAYOUT.WIDTH * 0.05,
     fontFamily: LAYOUT.FONTS.BOLD,
   },
 });

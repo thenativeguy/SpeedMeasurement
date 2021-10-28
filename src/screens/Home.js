@@ -1,6 +1,6 @@
 import {continueStatement} from '@babel/types';
 import {NavigationContainer} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,10 +16,12 @@ import InputComponent from '../components/Global/InputComponent';
 import HomeButton from '../components/Home/HomeButton';
 import PlayButton from '../components/Home/PlayButton';
 import LoginButton from '../components/Login/LoginButton';
+import { ContextAuth } from '../context/AuthContext';
 import {LAYOUT} from '../layout';
 
 const Home = ({navigation}) => {
   const [playBtn, setplayBtn] = useState(true);
+  const {user, logout} = useContext(ContextAuth)
   return (
     // Main View
     <View style={playBtn ? styles.mainViewActive : styles.mainView}>
@@ -29,9 +31,9 @@ const Home = ({navigation}) => {
         style={styles.backgroundImageStyle}
       />
       {/* Home Button Component */}
-      {playBtn ? null : (
+      {/* {playBtn ? null : (
         <HomeButton click={() => navigation.navigate('Login')} />
-      )}
+      )} */}
       {/* Main Heading View */}
       <View style={{alignItems: 'center'}}>
         {playBtn ? (
@@ -40,7 +42,8 @@ const Home = ({navigation}) => {
             <Text style={styles.secondHeading}>fast as a rabbit?</Text>
           </View>
         ) : (
-          <View style={{alignItems: 'center'}}>
+          <View style={{alignItems: 'center', marginTop: LAYOUT.WIDTH*0.07}}>
+             <HomeButton click={() => logout()} />
             <Text style={styles.firstHeading}>Awesome!</Text>
             <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
               You were fast like a rabbit
@@ -73,15 +76,21 @@ const Home = ({navigation}) => {
         </View>
       </View>
       {/* Play Button */}
-      <View style={{marginTop: 10}}>
-        {playBtn ? <PlayButton click={() => setplayBtn(false)} /> : null}
+      <View>
+        {
+        playBtn ? 
+        <View style={{marginBottom: 20}}>
+        <PlayButton click={() => setplayBtn(false)} /> 
+        </View>
+        : null
+        }
       </View>
       {/* Timer and Image Layout */}
       <View>
         {playBtn ? null : <Text style={styles.timerTextStyle}>11:07 s</Text>}
       </View>
       {playBtn ? null : (
-        <View>
+        <View >
           <Image
             source={require('../assets/images/character-rabbit.png')}
             style={styles.characterImageStyle}
@@ -101,7 +110,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainViewActive: {
-    flex: 0.9,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -123,13 +132,13 @@ const styles = StyleSheet.create({
     height: LAYOUT.HEIGHT * 1.1,
   },
   inputTitleMainView: {
-    marginVertical: 10,
+    marginVertical: 5,
     alignSelf: 'center',
-    marginBottom: LAYOUT.HEIGHT * 0.09,
+    marginBottom: LAYOUT.HEIGHT * 0.1,
   },
   inputTitleMainViewActive: {
-    marginVertical: 10,
-    alignSelf: 'center',
+    marginTop:5 ,
+    // alignSelf: 'center',
   },
   inputTitleSecondaryView: {
     flexDirection: 'row',
@@ -156,7 +165,7 @@ const styles = StyleSheet.create({
     fontFamily: LAYOUT.FONTS.BOLD,
     color: '#fff',
     fontSize: 35,
-    marginTop: 20,
+    marginTop: 10,
   },
   secondHeading: {
     fontFamily: LAYOUT.FONTS.BOLD,
@@ -164,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 34,
   },
   characterImageStyle: {
-    width: LAYOUT.WIDTH * 1,
+    width: LAYOUT.WIDTH * .4,
     height: LAYOUT.HEIGHT * 0.3,
     resizeMode: 'contain',
   },

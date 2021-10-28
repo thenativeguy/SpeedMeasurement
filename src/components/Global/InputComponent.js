@@ -3,7 +3,7 @@ import {ImageBackground, StyleSheet, Text, TextInput, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {LAYOUT} from '../../layout';
 
-const InputComponent = ({placeholder, secureTextEntry}) => {
+const InputComponent = ({placeholder, secureTextEntry, value, onChangeText}) => {
   return (
     <View>
       <LinearGradient
@@ -14,6 +14,8 @@ const InputComponent = ({placeholder, secureTextEntry}) => {
           style={styles.inputStyle}
           placeholderTextColor="#fff"
           secureTextEntry={secureTextEntry}
+          value={value}
+          onChangeText={onChangeText}
         />
       </LinearGradient>
     </View>

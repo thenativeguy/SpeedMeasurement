@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "751277750005",
+    "project_id": "speed-measurement",
+    "storage_bucket": "speed-measurement.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751277750005:android:693cd5ff25045e51e877bc",
+        "android_client_info": {
+          "package_name": "com.speedmeasurement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751277750005-c1c0au5g5n6qsc7n45e4781hsb964e9q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsv6YvKJxSJZfg4EO0BzjZP4pAE-P50mg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751277750005-c1c0au5g5n6qsc7n45e4781hsb964e9q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
