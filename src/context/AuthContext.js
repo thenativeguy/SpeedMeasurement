@@ -1,5 +1,6 @@
 import React, {createContext, useState} from 'react';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore'
 import {Alert} from 'react-native';
 
 export const ContextAuth = createContext();
@@ -15,9 +16,23 @@ const AuthContext = ({children}) => {
     }
   };
   // Signup Method
-  const register = async (email, password) => {
+  const register = async (username, email, password) => {
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
+      const res = await auth().createUserWithEmailAndPassword(email, password);
+      const user = res.user;
+      if(user){
+        // Alert.alert("User found")
+        await firestore().collection("users").add({
+          uid: user.uid,
+          username,
+          email,
+          // authProvider: 'local',
+        })
+      }
+      else{
+        Alert.alert("No record found")
+      }
+
     } catch (error) {
       Alert.alert('Error', error.message);
     }

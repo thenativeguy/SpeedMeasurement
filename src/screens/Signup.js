@@ -15,6 +15,7 @@ import { ContextAuth } from '../context/AuthContext';
 const Signup = ({navigation}) => {
   const [email, setemail] = useState();
   const [password, setpassword] = useState();
+  const [username, setUsername] = useState()
 
   const {register} = useContext(ContextAuth)
   return (
@@ -33,7 +34,7 @@ const Signup = ({navigation}) => {
       {/* Input form fields View */}
       <View style={styles.inputTitleMainView}>
         {/* Username */}
-        {/* <View style={styles.inputTitleSecondaryView}>
+        <View style={styles.inputTitleSecondaryView}>
           <Image
             source={require('../assets/images/icons/user.png')}
             style={[
@@ -43,7 +44,10 @@ const Signup = ({navigation}) => {
           />
           <Text style={styles.inputTitleTextStyle}>Username</Text>
         </View>
-        <InputComponent placeholder={'alexhiggins'} /> */}
+        <InputComponent
+        value={username}
+        onChangeText={userName => setUsername(userName)}
+        placeholder={'alexhiggins'} />
         {/* Email */}
         <View style={styles.inputTitleSecondaryView}>
           <Image
@@ -93,7 +97,7 @@ const Signup = ({navigation}) => {
         <View>
           <LoginButton
             title={'Register'}
-            pressHandler={() => register(email, password)}
+            pressHandler={() => register(username,email, password)}
           />
         </View>
       </View>
