@@ -16,12 +16,22 @@ import InputComponent from '../components/Global/InputComponent';
 import HomeButton from '../components/Home/HomeButton';
 import PlayButton from '../components/Home/PlayButton';
 import LoginButton from '../components/Login/LoginButton';
-import { ContextAuth } from '../context/AuthContext';
+import {ContextAuth} from '../context/AuthContext';
 import {LAYOUT} from '../layout';
 
-const Home = ({navigation}) => {
+const Home = ({navigation, route}) => {
+  // const laps = route.params
   const [playBtn, setplayBtn] = useState(true);
-  const {user, logout} = useContext(ContextAuth)
+  const {user, logout} = useContext(ContextAuth);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    {label: '1 Checkpoint run', value: 1},
+    {label: '2 Checkpoint run', value: 2},
+    {label: '4 Checkpoint run', value: 4},
+    {label: '6 Checkpoint run', value: 6},
+    {label: '12 Checkpoint run', value: 12},
+  ]);
   return (
     // Main View
     <View style={playBtn ? styles.mainViewActive : styles.mainView}>
@@ -42,8 +52,8 @@ const Home = ({navigation}) => {
             <Text style={styles.secondHeading}>fast as a rabbit?</Text>
           </View>
         ) : (
-          <View style={{alignItems: 'center', marginTop: LAYOUT.WIDTH*0.07}}>
-             <HomeButton click={() => logout()} />
+          <View style={{alignItems: 'center', marginTop: LAYOUT.WIDTH * 0.07}}>
+            <HomeButton click={() => logout()} />
             <Text style={styles.firstHeading}>Awesome!</Text>
             <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
               You were fast like a rabbit
@@ -51,6 +61,7 @@ const Home = ({navigation}) => {
           </View>
         )}
       </View>
+      {/* <Text> {laps} </Text> */}
       {/* Input form field View */}
       <View
         style={
@@ -72,25 +83,32 @@ const Home = ({navigation}) => {
             />
             <Text style={styles.inputTitleTextStyle}>Game Mode</Text>
           </View>
-          <DropDown />
+          <DropDown
+            theme={'DARK'}
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+          />
         </View>
       </View>
+      {/* <Text> {lastLap} </Text> */}
       {/* Play Button */}
       <View>
-        {
-        playBtn ? 
-        <View style={{marginBottom: 20}}>
-        <PlayButton click={() => setplayBtn(false)} /> 
-        </View>
-        : null
-        }
+        {playBtn ? (
+          <View style={{marginBottom: 20}}>
+            <PlayButton click={() => navigation.navigate('Stopwatch',{value})} />
+          </View>
+        ) : null}
       </View>
       {/* Timer and Image Layout */}
       <View>
         {playBtn ? null : <Text style={styles.timerTextStyle}>11:07 s</Text>}
       </View>
       {playBtn ? null : (
-        <View >
+        <View>
           <Image
             source={require('../assets/images/character-rabbit.png')}
             style={styles.characterImageStyle}
@@ -137,7 +155,7 @@ const styles = StyleSheet.create({
     marginBottom: LAYOUT.HEIGHT * 0.1,
   },
   inputTitleMainViewActive: {
-    marginTop:5 ,
+    marginTop: 5,
     // alignSelf: 'center',
   },
   inputTitleSecondaryView: {
@@ -173,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 34,
   },
   characterImageStyle: {
-    width: LAYOUT.WIDTH * .4,
+    width: LAYOUT.WIDTH * 0.4,
     height: LAYOUT.HEIGHT * 0.3,
     resizeMode: 'contain',
   },

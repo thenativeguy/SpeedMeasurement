@@ -5,13 +5,13 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import LinearGradient from 'react-native-linear-gradient'
 import { LAYOUT } from '../../layout'
 
-const DropDown = () => {
-    const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: '1 Checkpoint run', value: 'checkpoint1'},
-    {label: '2 Checkpoint run', value: 'checkpoint2'}
-  ]);
+const DropDown = ({theme, open, value, items, setOpen, setValue, setItems}) => {
+  //   const [open, setOpen] = useState(false);
+  // const [value, setValue] = useState(null);
+  // const [items, setItems] = useState([
+  //   {label: '1 Checkpoint run', value: 'checkpoint1'},
+  //   {label: '2 Checkpoint run', value: 'checkpoint2'}
+  // ]);
     return (
         <LinearGradient colors={['#FF8270', '#821100']} style={{borderRadius: 14, width: LAYOUT.WIDTH*.93,}} >
         <DropDownPicker

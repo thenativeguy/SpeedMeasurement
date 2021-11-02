@@ -1,6 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screens/Home';
+import Stopwatch from '../screens/Stopwatch';
 
 const StackHome = createNativeStackNavigator();
 const HomeStack = () => {
@@ -11,6 +12,11 @@ const HomeStack = () => {
         component={Home}
         options={{headerShown: false}}
       />
+      <StackHome.Screen 
+        name="Stopwatch"
+        component={Stopwatch}
+        // options={{headerShown: false}}
+        />
     </StackHome.Navigator>
   );
 };
