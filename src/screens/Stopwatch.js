@@ -4,6 +4,7 @@ import Timer from '../components/Stopwatch/Timer';
 import RoundButton from '../components/Stopwatch/RoundButton';
 import LapsTable from '../components/Stopwatch/LapsTable';
 import {LAYOUT} from '../layout';
+import HomeButton from '../components/Home/HomeButton';
 
 function ButtonsRow({children}) {
   return <View style={styles.buttonsRow}>{children}</View>;
@@ -46,23 +47,9 @@ const Stopwatch = ({route, navigation}) => {
     setLaps([firstLap + now - start, ...other]);
     setStart(0);
     setNow(0);
-    // navigation.navigate('Home',[laps])
-  };
-
-  const resetTimer = () => {
-    setLaps([]);
-    setStart(0);
-    setNow(0);
-  };
-
-  const resumeTimer = () => {
-    const cnow = new Date().getTime();
-    setStart(cnow);
-    setNow(cnow);
-
-    timerInterval.current = setInterval(() => {
-      setNow(new Date().getTime());
-    }, 100);
+    navigation.navigate('Scoreboard', {
+      lap: laps.reduce((total, curr) => total + curr, 0) + timer,
+    });
   };
 
   const timer = now - start;
@@ -72,65 +59,46 @@ const Stopwatch = ({route, navigation}) => {
         source={require('../assets/images/Background.png')}
         style={styles.backgroundImageStyle}
       />
-      <Text> Checkpoint: {value} </Text>
-      <Timer
-        interval={laps.reduce((total, curr) => total + curr, 0) + timer}
-        style={styles.timer}
-      />
-      {value > 0 && laps.length === 0 ? (
-        <RoundButton
-          title="Start"
-          color="#fff"
-          background={LAYOUT.COLORS.BUTTON_COLOR}
-          onPress={startTimer}
-        />
-      ) : null}
-      {laps.length < value && start > 0 ? (
-        // <ButtonsRow>
-        <RoundButton
-          title="Lap"
-          color="#FFFFFF"
-          background={LAYOUT.COLORS.BUTTON_COLOR}
-          onPress={lapTimer}
-        />
-      ) : // </ButtonsRow>
-      !value ? null : laps.length < value ? null : (
-        value == value && (
-          <RoundButton
-            title="Stop"
-            color="#fff"
-            background={LAYOUT.COLORS.RED}
-            onPress={stopTimer}
+      <View style={{alignItems: 'center'}}>
+        <View style={{alignItems: 'center'}}>
+          <HomeButton click={() => navigation.navigate('Home')} />
+          {/* <Text> Checkpoint: {value} </Text> */}
+          <View style={{marginVertical: LAYOUT.WIDTH * 0.15}}>
+            <Timer
+              interval={laps.reduce((total, curr) => total + curr, 0) + timer}
+              style={styles.timer}
             />
+          </View>
+
+          {value > 0 && laps.length === 0 ? (
+            <RoundButton
+              title="Start"
+              color="#fff"
+              background={LAYOUT.COLORS.BUTTON_COLOR}
+              onPress={startTimer}
+            />
+          ) : null}
+          {laps.length < value && start > 0 ? (
+            // <ButtonsRow>
+            <RoundButton
+              title="Lap"
+              color="#FFFFFF"
+              background={LAYOUT.COLORS.BUTTON_COLOR}
+              onPress={lapTimer}
+            />
+          ) : // </ButtonsRow>
+          !value ? null : laps.length < value ? null : (
+            value == value && (
+              <RoundButton
+                title="Stop"
+                color="#fff"
+                background={LAYOUT.COLORS.RED}
+                onPress={stopTimer}
+              />
             )
-            )}
-            
-          {/* <Text>{laps.pop()} </Text> */}
-      {/* {laps.length > 0 && start === 0 && (
-        <ButtonsRow>
-          <RoundButton
-            title="Reset"
-            color="#FFFFFF"
-            background={LAYOUT.COLORS.BUTTON_COLOR}
-            onPress={resetTimer}
-          />
-          <RoundButton
-            title="Start"
-            color="#fff"
-            background={LAYOUT.COLORS.BUTTON_COLOR}
-            onPress={resumeTimer}
-          />
-        </ButtonsRow>
-      )} */}
-      {/* {<RoundButton
-            title="Stop"
-            color="#fff"
-            background={LAYOUT.COLORS.RED}
-            onPress={stopTimer}
-          />&&<Text> {laps[laps.length-1]} </Text>} */}
-         
-          <Text>{laps[0]} </Text>
-        
+          )}
+        </View>
+      </View>
       <LapsTable laps={laps} timer={timer} />
     </View>
   );
@@ -140,10 +108,10 @@ export default Stopwatch;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: LAYOUT.WIDTH * 0.02,
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // paddingHorizontal: LAYOUT.WIDTH * 0.02,
   },
   backgroundImageStyle: {
     flex: 1,

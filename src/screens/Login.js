@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     alignItems: 'center',
+    height:LAYOUT.HEIGHT*1
   },
   backgroundImageStyle: {
     flex: 1,

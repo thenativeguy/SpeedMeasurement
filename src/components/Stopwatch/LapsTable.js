@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View,ScrollView } from 'react-native'
+import { LAYOUT } from '../../layout';
 import Lap from './Lap';
 
 const LapsTable = ({laps, timer}) => {
@@ -32,5 +33,6 @@ export default LapsTable
 const styles = StyleSheet.create({
     scrollView: {
         alignSelf: 'stretch',
+        marginHorizontal: LAYOUT.WIDTH*0.04
       },
 })

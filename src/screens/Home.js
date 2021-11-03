@@ -1,26 +1,13 @@
-import {continueStatement} from '@babel/types';
-import {NavigationContainer} from '@react-navigation/native';
 import React, {useContext, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import Svg from 'react-native-svg';
+import {StyleSheet, Text, View, ImageBackground, Image} from 'react-native';
 import DropDown from '../components/Global/DropDown';
 import InputComponent from '../components/Global/InputComponent';
 import HomeButton from '../components/Home/HomeButton';
 import PlayButton from '../components/Home/PlayButton';
-import LoginButton from '../components/Login/LoginButton';
 import {ContextAuth} from '../context/AuthContext';
 import {LAYOUT} from '../layout';
 
-const Home = ({navigation, route}) => {
-  // const laps = route.params
+const Home = ({navigation}) => {
   const [playBtn, setplayBtn] = useState(true);
   const {user, logout} = useContext(ContextAuth);
   const [open, setOpen] = useState(false);
@@ -32,6 +19,7 @@ const Home = ({navigation, route}) => {
     {label: '6 Checkpoint run', value: 6},
     {label: '12 Checkpoint run', value: 12},
   ]);
+
   return (
     // Main View
     <View style={playBtn ? styles.mainViewActive : styles.mainView}>
@@ -40,33 +28,18 @@ const Home = ({navigation, route}) => {
         source={require('../assets/images/Background.png')}
         style={styles.backgroundImageStyle}
       />
-      {/* Home Button Component */}
-      {/* {playBtn ? null : (
-        <HomeButton click={() => navigation.navigate('Login')} />
-      )} */}
+
       {/* Main Heading View */}
       <View style={{alignItems: 'center'}}>
-        {playBtn ? (
-          <View style={{alignItems: 'center'}}>
-            <Text style={styles.firstHeading}>Are You</Text>
-            <Text style={styles.secondHeading}>fast as a rabbit?</Text>
-          </View>
-        ) : (
-          <View style={{alignItems: 'center', marginTop: LAYOUT.WIDTH * 0.07}}>
-            <HomeButton click={() => logout()} />
-            <Text style={styles.firstHeading}>Awesome!</Text>
-            <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
-              You were fast like a rabbit
-            </Text>
-          </View>
-        )}
+        <View style={{alignItems: 'center'}}>
+          <Text style={styles.firstHeading}>Are You</Text>
+          <Text style={styles.secondHeading}>fast as a rabbit?</Text>
+        </View>
       </View>
-      {/* <Text> {laps} </Text> */}
+
       {/* Input form field View */}
-      <View
-        style={
-          playBtn ? styles.inputTitleMainView : styles.inputTitleMainViewActive
-        }>
+
+      <View style={styles.inputTitleMainView}>
         <View style={styles.inputTitleSecondaryView}>
           <Image
             source={require('../assets/images/icons/animal-track.png')}
@@ -94,27 +67,12 @@ const Home = ({navigation, route}) => {
           />
         </View>
       </View>
-      {/* <Text> {lastLap} </Text> */}
       {/* Play Button */}
       <View>
-        {playBtn ? (
-          <View style={{marginBottom: 20}}>
-            <PlayButton click={() => navigation.navigate('Stopwatch',{value})} />
-          </View>
-        ) : null}
-      </View>
-      {/* Timer and Image Layout */}
-      <View>
-        {playBtn ? null : <Text style={styles.timerTextStyle}>11:07 s</Text>}
-      </View>
-      {playBtn ? null : (
-        <View>
-          <Image
-            source={require('../assets/images/character-rabbit.png')}
-            style={styles.characterImageStyle}
-          />
+        <View style={{marginBottom: 20}}>
+          <PlayButton click={() => navigation.navigate('Stopwatch', {value})} />
         </View>
-      )}
+      </View>
     </View>
   );
 };
