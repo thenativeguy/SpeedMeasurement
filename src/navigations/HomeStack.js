@@ -6,6 +6,7 @@ import Scoreboard from '../screens/Scoreboard';
 
 const StackHome = createNativeStackNavigator();
 const HomeStack = () => {
+  
   return (
     <StackHome.Navigator>
       <StackHome.Screen

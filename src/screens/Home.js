@@ -1,15 +1,16 @@
-import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, View, ImageBackground, Image} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {StyleSheet, Text, View, ImageBackground, Image, Alert} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import DropDown from '../components/Global/DropDown';
 import InputComponent from '../components/Global/InputComponent';
 import HomeButton from '../components/Home/HomeButton';
 import PlayButton from '../components/Home/PlayButton';
-import {ContextAuth} from '../context/AuthContext';
+import { ContextUser } from '../context/UserContext';
 import {LAYOUT} from '../layout';
 
 const Home = ({navigation}) => {
+  const {user} = useContext(ContextUser)
   const [playBtn, setplayBtn] = useState(true);
-  const {user, logout} = useContext(ContextAuth);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -19,7 +20,7 @@ const Home = ({navigation}) => {
     {label: '6 Checkpoint run', value: 6},
     {label: '12 Checkpoint run', value: 12},
   ]);
-
+ 
   return (
     // Main View
     <View style={playBtn ? styles.mainViewActive : styles.mainView}>
@@ -47,7 +48,12 @@ const Home = ({navigation}) => {
           />
           <Text style={styles.inputTitleTextStyle}>Player Name</Text>
         </View>
-        <InputComponent placeholder={'Rudolph Ingram'} />
+          <LinearGradient
+           colors={['#FF8270', '#821100']}
+           style={styles.linearGradientStyle}>
+          <Text style={styles.playerNameStyle}>{user?user.username: <Text>No user</Text>}</Text>
+          </LinearGradient>
+        {/* <InputComponent placeholder={'Rudolph Ingram'} /> */}
         <View style={{alignSelf: 'center'}}>
           <View style={styles.inputTitleSecondaryView}>
             <Image
@@ -90,17 +96,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  timerTextStyle: {
-    fontSize: 40,
-    fontFamily: LAYOUT.FONTS.BLACK,
-    color: LAYOUT.COLORS.GREEN,
-    textShadowColor: '#fff',
-    textShadowRadius: 1,
-    textShadowOffset: {
-      width: 2,
-      height: 2,
-    },
-  },
 
   backgroundImageStyle: {
     flex: 1,
@@ -114,12 +109,27 @@ const styles = StyleSheet.create({
   },
   inputTitleMainViewActive: {
     marginTop: 5,
-    // alignSelf: 'center',
   },
   inputTitleSecondaryView: {
     flexDirection: 'row',
     marginVertical: 10,
     alignItems: 'center',
+  },
+  linearGradientStyle: {
+    borderRadius: 14,
+    width: LAYOUT.WIDTH * 0.93,
+  },
+  playerNameStyle:{
+    width: LAYOUT.WIDTH * 0.9,
+    paddingLeft: 10,
+    marginVertical: 5,
+    marginHorizontal: 5,
+    borderRadius: 10,
+    paddingVertical: 10,
+    backgroundColor: LAYOUT.COLORS.RED,
+    fontSize: 20,
+    color: '#fff',
+    fontFamily: LAYOUT.FONTS.BOLD,
   },
   headingIconsStyle: {
     width: 25,

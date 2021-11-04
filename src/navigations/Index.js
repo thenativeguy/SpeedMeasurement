@@ -4,9 +4,9 @@ import Routes from './Routes'
 
 const Index = () => {
     return (
-        <AuthContext>
+        // <AuthContext>
             <Routes />
-        </AuthContext>
+        // </AuthContext>
     )
 }
 

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, View, ImageBackground, Image} from 'react-native';
+import LogInOut from '../components/Global/LogInOut';
 import HomeButton from '../components/Home/HomeButton';
 import Timer from '../components/Stopwatch/Timer';
+import {ContextAuth} from '../context/AuthContext';
 import {LAYOUT} from '../layout';
 
 const Scoreboard = ({route, navigation}) => {
+  const {user, logout} = useContext(ContextAuth);
   const lap = route.params ? route.params.lap : null;
   return (
     <View style={styles.mainViewActive}>
@@ -14,9 +17,12 @@ const Scoreboard = ({route, navigation}) => {
       />
       <View style={{alignItems: 'center'}}>
         <View style={{alignItems: 'center', marginBottom: LAYOUT.WIDTH * 0.15}}>
-          <HomeButton click={() => navigation.navigate('Home')} />
+          <View style={{flexDirection: 'row'}}>
+            <HomeButton click={() => navigation.navigate('Home')} />
+            <LogInOut click={() => logout()} />
+          </View>
           {lap < 20000 ? (
-            <View style={{marginVertical: LAYOUT.HEIGHT*0.017}}>
+            <View style={{marginVertical: LAYOUT.HEIGHT * 0.017}}>
               <Text style={styles.firstHeading}>Awesome!</Text>
               <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
                 You were fast like a rabbit
@@ -24,7 +30,7 @@ const Scoreboard = ({route, navigation}) => {
             </View>
           ) : (
             // style={{marginVertical: LAYOUT.HEIGHT * 0.1}}
-            <View style={{marginVertical: LAYOUT.HEIGHT*0.017}}>
+            <View style={{marginVertical: LAYOUT.HEIGHT * 0.017}}>
               <Text style={styles.firstHeading}>Good!</Text>
               <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
                 You were fast like a turtle
@@ -43,16 +49,17 @@ const Scoreboard = ({route, navigation}) => {
           />
         </View>
         <View>
-         {lap < 20000 ?
-         <Image
-         source={require('../assets/images/character-rabbit.png')}
-         style={styles.characterImageStyle}
-       />:
-       <Image
-       source={require('../assets/images/character2.png')}
-       style={styles.characterImageStyle}
-     />
-        }
+          {lap < 20000 ? (
+            <Image
+              source={require('../assets/images/character-rabbit.png')}
+              style={styles.characterImageStyle}
+            />
+          ) : (
+            <Image
+              source={require('../assets/images/character2.png')}
+              style={styles.characterImageStyle}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -64,7 +71,7 @@ export default Scoreboard;
 const styles = StyleSheet.create({
   mainViewActive: {
     flex: 1,
-    height:LAYOUT.HEIGHT*1
+    height: LAYOUT.HEIGHT * 1,
   },
   backgroundImageStyle: {
     flex: 1,

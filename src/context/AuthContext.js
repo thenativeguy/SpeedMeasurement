@@ -1,6 +1,6 @@
 import React, {createContext, useState} from 'react';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore'
+import firestore from '@react-native-firebase/firestore';
 import {Alert} from 'react-native';
 
 export const ContextAuth = createContext();
@@ -10,6 +10,7 @@ const AuthContext = ({children}) => {
   // Login Method
   const login = async (email, password) => {
     try {
+      // setuser(null)
       await auth().signInWithEmailAndPassword(email, password);
     } catch (error) {
       Alert.alert('Error', error.message);
@@ -18,28 +19,31 @@ const AuthContext = ({children}) => {
   // Signup Method
   const register = async (username, email, password) => {
     try {
+      if (!username || !email || !password )
+        return Alert.alert(
+          'Warning',
+          'All Fields are Required Empty or Invalid Credential',
+        );
       const res = await auth().createUserWithEmailAndPassword(email, password);
       const user = res.user;
-      if(user){
-        // Alert.alert("User found")
-        await firestore().collection("users").add({
+      if (user) {
+        await firestore().collection("users").doc(user.uid).set({
           uid: user.uid,
           username,
           email,
-          // authProvider: 'local',
         })
+        // Alert.alert('User Created Successfully');
+      } else {
+        Alert.alert('User Not Created Successfully');
       }
-      else{
-        Alert.alert("No record found")
-      }
-
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('error', error.message);
     }
   };
   //Signout Method
   const logout = async () => {
     try {
+      // setuser(null)
       await auth().signOut();
     } catch (error) {
       Alert.alert('Error', error.message);
