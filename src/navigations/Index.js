@@ -1,13 +1,8 @@
-import React from 'react'
-import AuthContext from '../context/AuthContext'
-import Routes from './Routes'
+import React from 'react';
+import Routes from './Routes';
 
 const Index = () => {
-    return (
-        // <AuthContext>
-            <Routes />
-        // </AuthContext>
-    )
-}
+  return <Routes />;
+};
 
-export default Index
+export default Index;

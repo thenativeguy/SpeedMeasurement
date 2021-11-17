@@ -1,41 +1,34 @@
-import React, {useContext} from 'react';
-import {StyleSheet, Text, View, ImageBackground, Image} from 'react-native';
+import React from 'react';
+import {StyleSheet, View, Image} from 'react-native';
+import Background from '../components/Global/Background';
+import Header from '../components/Global/Header';
 import LogInOut from '../components/Global/LogInOut';
 import HomeButton from '../components/Home/HomeButton';
 import Timer from '../components/Stopwatch/Timer';
-import {ContextAuth} from '../context/AuthContext';
 import {LAYOUT} from '../layout';
 
 const Scoreboard = ({route, navigation}) => {
-  const {user, logout} = useContext(ContextAuth);
   const lap = route.params ? route.params.lap : null;
   return (
-    <View style={styles.mainViewActive}>
-      <ImageBackground
-        source={require('../assets/images/Background.png')}
-        style={styles.backgroundImageStyle}
-      />
-      <View style={{alignItems: 'center'}}>
-        <View style={{alignItems: 'center', marginBottom: LAYOUT.WIDTH * 0.15}}>
+    <Background>
+      <View style={styles.headerView}>
+        <View style={styles.headerSubView}>
           <View style={{flexDirection: 'row'}}>
             <HomeButton click={() => navigation.navigate('Home')} />
-            <LogInOut click={() => logout()} />
+            <LogInOut click={() => navigation.navigate('Login')} />
           </View>
           {lap < 20000 ? (
-            <View style={{marginVertical: LAYOUT.HEIGHT * 0.017}}>
-              <Text style={styles.firstHeading}>Awesome!</Text>
-              <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
-                You were fast like a rabbit
-              </Text>
-            </View>
+            <Header
+              scoreboard
+              title="Awesome!"
+              subTitle="You were fast like a rabbit"
+            />
           ) : (
-            // style={{marginVertical: LAYOUT.HEIGHT * 0.1}}
-            <View style={{marginVertical: LAYOUT.HEIGHT * 0.017}}>
-              <Text style={styles.firstHeading}>Good!</Text>
-              <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
-                You were fast like a turtle
-              </Text>
-            </View>
+            <Header
+              scoreboard
+              title="Good!"
+              subTitle="You were fast like a turtle"
+            />
           )}
         </View>
         <View style={{marginBottom: LAYOUT.HEIGHT * 0.05}}>
@@ -51,32 +44,30 @@ const Scoreboard = ({route, navigation}) => {
         <View>
           {lap < 20000 ? (
             <Image
-              source={require('../assets/images/character-rabbit.png')}
+              source={LAYOUT.SCOREBOARD_CHARACTERS.RABBIT}
               style={styles.characterImageStyle}
             />
           ) : (
             <Image
-              source={require('../assets/images/character2.png')}
+              source={LAYOUT.SCOREBOARD_CHARACTERS.TURTLE}
               style={styles.characterImageStyle}
             />
           )}
         </View>
       </View>
-    </View>
+    </Background>
   );
 };
 
 export default Scoreboard;
 
 const styles = StyleSheet.create({
-  mainViewActive: {
-    flex: 1,
-    height: LAYOUT.HEIGHT * 1,
+  headerView: {
+    alignItems: 'center',
   },
-  backgroundImageStyle: {
-    flex: 1,
-    width: LAYOUT.WIDTH * 1,
-    height: LAYOUT.HEIGHT * 1.1,
+  headerSubView:{
+    alignItems: 'center',
+    marginBottom: LAYOUT.WIDTH * 0.15,
   },
   timer: {
     fontFamily: LAYOUT.FONTS.BLACK,
@@ -123,3 +114,17 @@ const styles = StyleSheet.create({
     // bottom: 0,
   },
 });
+// style={{marginVertical: LAYOUT.HEIGHT * 0.1}}
+// <View style={{marginVertical: LAYOUT.HEIGHT * 0.017}}>
+//   <Text style={styles.firstHeading}>Good!</Text>
+//   <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
+//     You were fast like a turtle
+//   </Text>
+// </View>
+
+// <View style={{marginVertical: LAYOUT.HEIGHT * 0.017}}>
+//   <Text style={styles.firstHeading}>Awesome!</Text>
+//   <Text style={[styles.secondHeading, {textAlign: 'center'}]}>
+//     You were fast like a rabbit
+//   </Text>
+// </View>

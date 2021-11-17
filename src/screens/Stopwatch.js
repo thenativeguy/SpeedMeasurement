@@ -5,7 +5,7 @@ import RoundButton from '../components/Stopwatch/RoundButton';
 import LapsTable from '../components/Stopwatch/LapsTable';
 import {LAYOUT} from '../layout';
 import HomeButton from '../components/Home/HomeButton';
-
+import Background from '../components/Global/Background';
 function ButtonsRow({children}) {
   return <View style={styles.buttonsRow}>{children}</View>;
 }
@@ -54,12 +54,8 @@ const Stopwatch = ({route, navigation}) => {
 
   const timer = now - start;
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require('../assets/images/Background.png')}
-        style={styles.backgroundImageStyle}
-      />
-      <View style={{alignItems: 'center'}}>
+    <Background>
+       <View style={{alignItems: 'center'}}>
         <View style={{alignItems: 'center'}}>
           <HomeButton click={() => navigation.navigate('Home')} />
           {/* <Text> Checkpoint: {value} </Text> */}
@@ -100,25 +96,13 @@ const Stopwatch = ({route, navigation}) => {
         </View>
       </View>
       <LapsTable laps={laps} timer={timer} />
-    </View>
+    </Background>
   );
 };
 
 export default Stopwatch;
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // paddingHorizontal: LAYOUT.WIDTH * 0.02,
-  },
-  backgroundImageStyle: {
-    flex: 1,
-    width: LAYOUT.WIDTH * 1,
-    height: LAYOUT.HEIGHT * 1.1,
-    paddingTop: LAYOUT.HEIGHT * 0.16,
-  },
   timer: {
     fontFamily: LAYOUT.FONTS.BLACK,
     color: LAYOUT.COLORS.BUTTON_BORDER,

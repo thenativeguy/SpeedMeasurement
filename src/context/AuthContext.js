@@ -1,63 +1,67 @@
-import React, {createContext, useState} from 'react';
+import React, {useState, createContext, useEffect, useContext} from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {Alert} from 'react-native';
 
-export const ContextAuth = createContext();
-const AuthContext = ({children}) => {
-  const [user, setuser] = useState(null);
-  const [name, setname] = useState();
-  // Login Method
-  const login = async (email, password) => {
-    try {
-      // setuser(null)
-      await auth().signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    }
-  };
-  // Signup Method
-  const register = async (username, email, password) => {
-    try {
-      if (!username || !email || !password )
-        return Alert.alert(
-          'Warning',
-          'All Fields are Required Empty or Invalid Credential',
-        );
-      const res = await auth().createUserWithEmailAndPassword(email, password);
-      const user = res.user;
-      if (user) {
-        await firestore().collection("users").doc(user.uid).set({
-          uid: user.uid,
-          username,
-          email,
-        })
-        // Alert.alert('User Created Successfully');
-      } else {
-        Alert.alert('User Not Created Successfully');
-      }
-    } catch (error) {
-      Alert.alert('error', error.message);
-    }
-  };
-  //Signout Method
-  const logout = async () => {
-    try {
-      // setuser(null)
-      await auth().signOut();
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    }
+const AuthContext = createContext();
+export const useAuthContext = () => useContext(AuthContext);
+
+export const AuthProvider = ({children}) => {
+  const [initializing, setInitializing] = useState(true);
+  const [currentAuth, setCurrentAuth] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const onAuthStateChanged = auth => {
+    setCurrentAuth(auth);
+    // if (initializing) setInitializing(false);
   };
 
-  const value = {
-    user,
-    setuser,
-    register,
-    login,
-    logout,
-  };
-  return <ContextAuth.Provider value={value}>{children}</ContextAuth.Provider>;
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  useEffect(() => {
+    // console.log('AuthContext currentAuth Changed', currentAuth);
+    if (currentAuth) {
+      //subscribe to changes in the user's database object
+      firestore()
+        .collection('users')
+        .doc(currentAuth.uid)
+        .get()
+        .then(documentSnapshot => {
+          //check if user active here
+          if (documentSnapshot.exists) {
+            let user = {
+              id: currentAuth.uid,
+              ...documentSnapshot.data(),
+            };
+            setCurrentUser(user);
+            if (initializing) setInitializing(false);
+          } else {
+            setCurrentUser(null);
+
+            if (initializing) setInitializing(false);
+          }
+        });
+    } else {
+      setInitializing(false);
+      setCurrentUser(null);
+    }
+  }, [currentAuth, currentUser]);
+
+  // if (initializing) return null;
+
+  return (
+    <AuthContext.Provider
+      value={{
+        currentAuth,
+        setCurrentAuth,
+        currentUser,
+        setCurrentUser,
+        setInitializing,
+        initializing,
+      }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
-
-export default AuthContext;

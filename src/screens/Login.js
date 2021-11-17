@@ -12,66 +12,33 @@ import {
 import InputComponent from '../components/Global/InputComponent';
 import LoginButton from '../components/Login/LoginButton';
 import {LAYOUT} from '../layout';
-import {ContextAuth} from '../context/AuthContext';
+import Background from '../components/Global/Background';
+import Header from '../components/Global/Header';
+import {useAuthContext} from '../context/AuthContext';
 
 const Login = ({navigation}) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const {login} = useContext(ContextAuth);
   return (
-    //Main View
-    <View style={styles.mainView}>
-      {/* Bacground Image */}
-      <ImageBackground
-        source={require('../assets/images/Background.png')}
-        style={styles.backgroundImageStyle}
-      />
-      {/* Main Heading */}
-      <View style={{alignItems: 'center', marginBottom: LAYOUT.HEIGHT * 0.05}}>
-        <Text style={styles.firstHeading}>Are You</Text>
-        <Text style={styles.secondHeading}>fast as a rabbit?</Text>
-      </View>
+    <Background>
+      <Header title="Are You" subTitle="fast as a rabbit?" />
       {/* Input form fields View */}
       <View style={styles.inputTitleMainView}>
-        {/* Username */}
-        {/* <View style={styles.inputTitleSecondaryView}>
-          <Image
-            source={require('../assets/images/icons/user.png')}
-            style={styles.headingIconsStyle}
-          />
-          <Text style={styles.inputTitleTextStyle}>Username</Text>
-        </View>
-        <InputComponent placeholder={'alexhiggins'} /> */}
         {/* Email */}
-        <View style={styles.inputTitleSecondaryView}>
-          <Image
-            source={require('../assets/images/icons/email.png')}
-            style={styles.headingIconsStyle}
-          />
-          <Text style={styles.inputTitleTextStyle}>Email</Text>
-        </View>
+
         <InputComponent
-          value={email}
-          onChangeText={userEmail => setEmail(userEmail)}
+          label="Email"
+          icon={LAYOUT.ICONS.EMAIL}
           placeholder={'alexhiggins@abc.com'}
         />
         {/* Password */}
-        <View style={{alignSelf: 'center'}}>
-          <View style={styles.inputTitleSecondaryView}>
-            <Image
-              source={require('../assets/images/icons/password.png')}
-              style={styles.headingIconsStyle}
-            />
-            <Text style={styles.inputTitleTextStyle}>Password</Text>
-          </View>
 
-          <InputComponent
-            value={password}
-            onChangeText={userPassword => setPassword(userPassword)}
-            placeholder={'Password'}
-            secureTextEntry={true}
-          />
-        </View>
+        <InputComponent
+          label="Password"
+          pwd
+          icon={LAYOUT.ICONS.PASSWORD}
+          placeholder={'Password'}
+          secureTextEntry={true}
+        />
+
         {/* Registeration link */}
         <View style={{marginTop: LAYOUT.HEIGHT * 0.02, flexDirection: 'row'}}>
           <Text style={styles.registerLinkStyle}>No account?</Text>
@@ -83,38 +50,28 @@ const Login = ({navigation}) => {
         <View>
           <LoginButton
             title={'Login'}
-            pressHandler={() => login(email, password)}
+            pressHandler={() => navigation.navigate('Home Stack')}
           />
         </View>
       </View>
       {/* Logo */}
       <View style={styles.logoView}>
         <Image
-          source={require('../assets/images/logo.png')}
+          source={LAYOUT.LOGO}
           style={styles.logoStyle}
         />
       </View>
-    </View>
+    </Background>
   );
 };
 
 export default Login;
 
 const styles = StyleSheet.create({
-  mainView: {
-    flex: 1,
-    // justifyContent: 'center',
-    alignItems: 'center',
-    height:LAYOUT.HEIGHT*1
-  },
-  backgroundImageStyle: {
-    flex: 1,
-    width: LAYOUT.WIDTH * 1,
-    height: LAYOUT.HEIGHT * 1.1,
-  },
   inputTitleMainView: {
     marginVertical: 10,
-    alignSelf: 'center',
+    marginHorizontal: 10,
+    // alignSelf: 'center',
     // marginBottom: LAYOUT.HEIGHT*0.08
   },
   inputTitleSecondaryView: {
@@ -138,22 +95,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  firstHeading: {
-    fontFamily: LAYOUT.FONTS.BOLD,
-    color: '#fff',
-    fontSize: 42,
-  },
-  secondHeading: {
-    fontFamily: LAYOUT.FONTS.BOLD,
-    color: '#000',
-    fontSize: 34,
-  },
+
   logoView: {
     backgroundColor: '#fff',
     paddingHorizontal: 30,
     paddingVertical: 10,
     borderRadius: 50,
     marginBottom: LAYOUT.HEIGHT * 0.07,
+    width: LAYOUT.WIDTH * 0.5,
+    alignSelf: 'center',
   },
   logoStyle: {
     width: LAYOUT.WIDTH * 0.3,

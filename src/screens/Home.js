@@ -1,15 +1,23 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ImageBackground, Image, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  Image,
+  Alert,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Background from '../components/Global/Background';
 import DropDown from '../components/Global/DropDown';
-import InputComponent from '../components/Global/InputComponent';
-import HomeButton from '../components/Home/HomeButton';
+import Header from '../components/Global/Header';
 import PlayButton from '../components/Home/PlayButton';
-import { ContextUser } from '../context/UserContext';
+import AppContext, {useAppContext} from '../context/AppContext';
 import {LAYOUT} from '../layout';
 
-const Home = ({navigation}) => {
-  const {user} = useContext(ContextUser)
+const Home = ({navigation, route}) => {
+  // const {playerName} = route.params;
+  const {players, setPlayers} = useAppContext();
   const [playBtn, setplayBtn] = useState(true);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -20,44 +28,48 @@ const Home = ({navigation}) => {
     {label: '6 Checkpoint run', value: 6},
     {label: '12 Checkpoint run', value: 12},
   ]);
- 
+  const [open1, setOpen1] = useState(false);
+  const [value1, setValue1] = useState(null);
+  useEffect(() => {
+    const result = players.map((user, index) => {
+      return {label: user.name, value: index + 1};
+    });
+    setValue1(result);
+    console.log(result);
+  }, []);
+
+  // if (!value) return <View />;
   return (
-    // Main View
-    <View style={playBtn ? styles.mainViewActive : styles.mainView}>
-      {/* Background Image */}
-      <ImageBackground
-        source={require('../assets/images/Background.png')}
-        style={styles.backgroundImageStyle}
-      />
-
-      {/* Main Heading View */}
-      <View style={{alignItems: 'center'}}>
-        <View style={{alignItems: 'center'}}>
-          <Text style={styles.firstHeading}>Are You</Text>
-          <Text style={styles.secondHeading}>fast as a rabbit?</Text>
-        </View>
-      </View>
-
-      {/* Input form field View */}
-
+    <Background>
+      <Header title="Are You" subTitle="fast as a rabbit?" />
       <View style={styles.inputTitleMainView}>
         <View style={styles.inputTitleSecondaryView}>
           <Image
-            source={require('../assets/images/icons/animal-track.png')}
+            source={LAYOUT.ICONS.ANIMAL_TRACK}
             style={styles.headingIconsStyle}
           />
           <Text style={styles.inputTitleTextStyle}>Player Name</Text>
         </View>
-          <LinearGradient
-           colors={['#FF8270', '#821100']}
-           style={styles.linearGradientStyle}>
-          <Text style={styles.playerNameStyle}>{user?user.username: <Text>No user</Text>}</Text>
-          </LinearGradient>
+        {/* <DropDown
+            theme={'DARK'}
+            open={open1}
+            value={value1}
+            items={items}
+            setOpen={setOpen1}
+            setValue={setValue1}
+            setItems={setItems1}
+            placeholder="Select Checkpoint"
+          /> */}
+        {/* <LinearGradient
+          colors={['#FF8270', '#821100']}
+          style={styles.linearGradientStyle}> */}
+          {/* <Text style={styles.playerNameStyle}>{playerName}</Text> */}
+        {/* </LinearGradient> */}
         {/* <InputComponent placeholder={'Rudolph Ingram'} /> */}
         <View style={{alignSelf: 'center'}}>
           <View style={styles.inputTitleSecondaryView}>
             <Image
-              source={require('../assets/images/icons/hare1.png')}
+              source={LAYOUT.ICONS.HARE}
               style={styles.headingIconsStyle}
             />
             <Text style={styles.inputTitleTextStyle}>Game Mode</Text>
@@ -70,16 +82,17 @@ const Home = ({navigation}) => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
+            placeholder="Select Checkpoint"
           />
         </View>
       </View>
       {/* Play Button */}
       <View>
-        <View style={{marginBottom: 20}}>
+        <View style={{marginBottom: 20, alignSelf: 'center'}}>
           <PlayButton click={() => navigation.navigate('Stopwatch', {value})} />
         </View>
       </View>
-    </View>
+    </Background>
   );
 };
 
@@ -119,7 +132,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     width: LAYOUT.WIDTH * 0.93,
   },
-  playerNameStyle:{
+  playerNameStyle: {
     width: LAYOUT.WIDTH * 0.9,
     paddingLeft: 10,
     marginVertical: 5,

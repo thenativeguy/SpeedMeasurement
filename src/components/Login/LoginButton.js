@@ -25,17 +25,18 @@ const styles = StyleSheet.create({
   btnStyle: {
     paddingVertical: 12,
     backgroundColor: LAYOUT.COLORS.BUTTON_COLOR,
-    width: LAYOUT.WIDTH * 0.9,
-    alignItems: 'center',
-    alignSelf: 'center',
+    // width: LAYOUT.WIDTH * 0.9,
+    // alignItems: 'center',
+    // alignSelf: 'center',
     marginVertical: 20,
     borderRadius: 13,
     borderWidth: 4,
     borderColor: LAYOUT.COLORS.BUTTON_BORDER,
   },
-  btnTextStyle:{
+  btnTextStyle: {
     color: '#fff',
     fontFamily: LAYOUT.FONTS.BOLD,
     fontSize: 20,
-  }
+    textAlign: 'center',
+  },
 });

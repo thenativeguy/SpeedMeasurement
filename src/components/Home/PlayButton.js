@@ -12,7 +12,7 @@ const PlayButton = ({click}) => {
     <View>
       <TouchableOpacity onPress={click}>
         <ImageBackground
-          source={require('../../assets/images/icons/play-button.png')}
+          source={LAYOUT.ICONS.PLAY_BUTTON}
           style={styles.btnImageStyle}
         />
         <Text style={styles.btnTextStyle}>Play</Text>
