@@ -3,19 +3,14 @@ import {StyleSheet, Text, View} from 'react-native';
 import Background from '../components/Global/Background';
 import DropDown from '../components/Global/DropDown';
 import LoginButton from '../components/Login/LoginButton';
+import { PLAYER_NUMERS } from '../constants';
 import {useAppContext} from '../context/AppContext';
 import {LAYOUT} from '../layout';
 
 const ChoosePlayers = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 1, value: 1, name: 'Khan'},
-    {label: 2, value: 2},
-    {label: 4, value: 4},
-    {label: 6, value: 6},
-    {label: 12, value: 12},
-  ]);
+ 
 
   const {setPlayers, players} = useAppContext();
 
@@ -29,8 +24,14 @@ const ChoosePlayers = ({navigation}) => {
     for (let index = 0; index < value; index++) {
       tempArray.push(tempObj);
     }
+    setValue(null);
     setPlayers(tempArray);
-    navigation.navigate('Player Details');
+    if(!value){
+
+    }
+    else{
+      navigation.navigate('Player Details');
+    }
   };
 
   return (
@@ -41,7 +42,7 @@ const ChoosePlayers = ({navigation}) => {
           theme={'DARK'}
           open={open}
           value={value}
-          items={items}
+          items={PLAYER_NUMERS}
           setOpen={setOpen}
           setValue={setValue}
           placeholder="Select No. of players"

@@ -12,33 +12,41 @@ import Background from '../components/Global/Background';
 import DropDown from '../components/Global/DropDown';
 import Header from '../components/Global/Header';
 import PlayButton from '../components/Home/PlayButton';
+import {GAME_MODE_OPTIONS} from '../constants';
 import AppContext, {useAppContext} from '../context/AppContext';
 import {LAYOUT} from '../layout';
 
 const Home = ({navigation, route}) => {
-  // const {playerName} = route.params;
-  const {players, setPlayers} = useAppContext();
-  const [playBtn, setplayBtn] = useState(true);
+  const {players, gameMode, setGameMode} = useAppContext();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: '1 Checkpoint run', value: 1},
-    {label: '2 Checkpoint run', value: 2},
-    {label: '4 Checkpoint run', value: 4},
-    {label: '6 Checkpoint run', value: 6},
-    {label: '12 Checkpoint run', value: 12},
-  ]);
-  const [open1, setOpen1] = useState(false);
-  const [value1, setValue1] = useState(null);
-  useEffect(() => {
-    const result = players.map((user, index) => {
-      return {label: user.name, value: index + 1};
-    });
-    setValue1(result);
-    console.log(result);
-  }, []);
 
-  // if (!value) return <View />;
+  const [playerNameOptions, setPlayerNameOptions] = useState(null);
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [openNameDropdown, setOpenNameDropdown] = useState(false);
+
+  useEffect(() => {
+    setPlayerNameOptions(null);
+    const unsubscribe = navigation.addListener('focus', () => {
+      const result = players.map((user, index) => {
+        return !user.isComplete && {label: user.name, value: index};
+      });
+      setPlayerNameOptions(result);
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
+  const navigateTo = () => {
+    setGameMode(value);
+    navigation.navigate('Stopwatch', {
+      checkpoint: value,
+      selectedPlayerIndex: selectedPlayer,
+    });
+  };
+
+  if (!playerNameOptions) return <View />;
   return (
     <Background>
       <Header title="Are You" subTitle="fast as a rabbit?" />
@@ -50,22 +58,17 @@ const Home = ({navigation, route}) => {
           />
           <Text style={styles.inputTitleTextStyle}>Player Name</Text>
         </View>
-        {/* <DropDown
-            theme={'DARK'}
-            open={open1}
-            value={value1}
-            items={items}
-            setOpen={setOpen1}
-            setValue={setValue1}
-            setItems={setItems1}
-            placeholder="Select Checkpoint"
-          /> */}
-        {/* <LinearGradient
-          colors={['#FF8270', '#821100']}
-          style={styles.linearGradientStyle}> */}
-          {/* <Text style={styles.playerNameStyle}>{playerName}</Text> */}
-        {/* </LinearGradient> */}
-        {/* <InputComponent placeholder={'Rudolph Ingram'} /> */}
+        <DropDown
+          theme={'DARK'}
+          open={openNameDropdown}
+          setOpen={setOpenNameDropdown}
+          value={selectedPlayer}
+          items={playerNameOptions}
+          setValue={setSelectedPlayer}
+          placeholder="Select Player"
+          zIndex={1000000000}
+        />
+
         <View style={{alignSelf: 'center'}}>
           <View style={styles.inputTitleSecondaryView}>
             <Image
@@ -77,19 +80,19 @@ const Home = ({navigation, route}) => {
           <DropDown
             theme={'DARK'}
             open={open}
-            value={value}
-            items={items}
+            value={gameMode ? gameMode : value}
+            items={GAME_MODE_OPTIONS}
             setOpen={setOpen}
             setValue={setValue}
-            setItems={setItems}
             placeholder="Select Checkpoint"
+            disabled={gameMode !== null}
           />
         </View>
       </View>
       {/* Play Button */}
       <View>
         <View style={{marginBottom: 20, alignSelf: 'center'}}>
-          <PlayButton click={() => navigation.navigate('Stopwatch', {value})} />
+          <PlayButton click={navigateTo} />
         </View>
       </View>
     </Background>

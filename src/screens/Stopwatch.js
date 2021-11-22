@@ -6,11 +6,13 @@ import LapsTable from '../components/Stopwatch/LapsTable';
 import {LAYOUT} from '../layout';
 import HomeButton from '../components/Home/HomeButton';
 import Background from '../components/Global/Background';
+import {useAppContext} from '../context/AppContext';
 function ButtonsRow({children}) {
   return <View style={styles.buttonsRow}>{children}</View>;
 }
 const Stopwatch = ({route, navigation}) => {
-  const {value} = route.params;
+  const {checkpoint, selectedPlayerIndex} = route.params;
+  const {players, setPlayers} = useAppContext();
   const [start, setStart] = useState(0);
   const [now, setNow] = useState(0);
   const [laps, setLaps] = useState([]);
@@ -47,18 +49,36 @@ const Stopwatch = ({route, navigation}) => {
     setLaps([firstLap + now - start, ...other]);
     setStart(0);
     setNow(0);
-    navigation.navigate('Scoreboard', {
-      lap: laps.reduce((total, curr) => total + curr, 0) + timer,
-    });
+
+    // Assing Laps to current playing user
+    const temp = [...players];
+    temp[selectedPlayerIndex].isComplete = true;
+    temp[selectedPlayerIndex].results = [
+      firstLap + now - start,
+      ...other,
+      laps.reduce((total, curr) => total + curr, 0) + timer,
+    ];
+    setPlayers(temp);
+
+    // Check if players remaining
+    const isPlayerRemining = temp.some(elem => elem.isComplete === false);
+    if (isPlayerRemining) {
+      setLaps([]);
+      navigation.navigate('Home');
+    } else {
+      setLaps([]);
+      navigation.navigate('Scoreboard', {
+        lap: laps.reduce((total, curr) => total + curr, 0) + timer,
+      });
+    }
   };
 
   const timer = now - start;
   return (
     <Background>
-       <View style={{alignItems: 'center'}}>
+      <View style={{alignItems: 'center'}}>
         <View style={{alignItems: 'center'}}>
           <HomeButton click={() => navigation.navigate('Home')} />
-          {/* <Text> Checkpoint: {value} </Text> */}
           <View style={{marginVertical: LAYOUT.WIDTH * 0.15}}>
             <Timer
               interval={laps.reduce((total, curr) => total + curr, 0) + timer}
@@ -66,7 +86,7 @@ const Stopwatch = ({route, navigation}) => {
             />
           </View>
 
-          {value > 0 && laps.length === 0 ? (
+          {checkpoint > 0 && laps.length === 0 ? (
             <RoundButton
               title="Start"
               color="#fff"
@@ -74,7 +94,7 @@ const Stopwatch = ({route, navigation}) => {
               onPress={startTimer}
             />
           ) : null}
-          {laps.length < value && start > 0 ? (
+          {laps.length < checkpoint && start > 0 ? (
             // <ButtonsRow>
             <RoundButton
               title="Lap"
@@ -83,8 +103,8 @@ const Stopwatch = ({route, navigation}) => {
               onPress={lapTimer}
             />
           ) : // </ButtonsRow>
-          !value ? null : laps.length < value ? null : (
-            value == value && (
+          !checkpoint ? null : laps.length < checkpoint ? null : (
+            checkpoint == checkpoint && (
               <RoundButton
                 title="Stop"
                 color="#fff"

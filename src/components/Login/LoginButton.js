@@ -9,10 +9,13 @@ import {
 } from 'react-native';
 import {LAYOUT} from '../../layout';
 
-const LoginButton = ({pressHandler, title}) => {
+const LoginButton = ({pressHandler, title, disabled}) => {
   return (
     <View>
-      <TouchableOpacity style={styles.btnStyle} onPress={pressHandler}>
+      <TouchableOpacity
+        style={styles.btnStyle}
+        onPress={pressHandler}
+        disabled={disabled}>
         <Text style={styles.btnTextStyle}>{title}</Text>
       </TouchableOpacity>
     </View>
@@ -25,9 +28,6 @@ const styles = StyleSheet.create({
   btnStyle: {
     paddingVertical: 12,
     backgroundColor: LAYOUT.COLORS.BUTTON_COLOR,
-    // width: LAYOUT.WIDTH * 0.9,
-    // alignItems: 'center',
-    // alignSelf: 'center',
     marginVertical: 20,
     borderRadius: 13,
     borderWidth: 4,

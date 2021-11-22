@@ -1,21 +1,42 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import Background from '../components/Global/Background';
 import Header from '../components/Global/Header';
 import LogInOut from '../components/Global/LogInOut';
 import HomeButton from '../components/Home/HomeButton';
 import Timer from '../components/Stopwatch/Timer';
+import {useAppContext} from '../context/AppContext';
 import {LAYOUT} from '../layout';
 
 const Scoreboard = ({route, navigation}) => {
   const lap = route.params ? route.params.lap : null;
+  const {players, resetState} = useAppContext();
+
+  useEffect(() => {
+    console.log(JSON.stringify(players, null, 1));
+    // console.log(JSON.stringify(players.sort(), null, 1))
+    players.map((pl, index) => {
+      pl.results.sort().reverse()
+      console.log(pl.results);
+      // let fastest = []
+      // fastest.push(pl.results[0])
+      // fastest.sort().reverse()
+      // console.log(fastest)
+    });
+  }, []);
+
+  const navigateTo = screenName => {
+    resetState();
+    navigation.navigate(screenName);
+  };
+
   return (
     <Background>
       <View style={styles.headerView}>
         <View style={styles.headerSubView}>
           <View style={{flexDirection: 'row'}}>
-            <HomeButton click={() => navigation.navigate('Home')} />
-            <LogInOut click={() => navigation.navigate('Login')} />
+            <HomeButton click={() => navigateTo('Choose Players')} />
+            <LogInOut click={() => navigateTo('Login')} />
           </View>
           {lap < 20000 ? (
             <Header
@@ -65,7 +86,7 @@ const styles = StyleSheet.create({
   headerView: {
     alignItems: 'center',
   },
-  headerSubView:{
+  headerSubView: {
     alignItems: 'center',
     marginBottom: LAYOUT.WIDTH * 0.15,
   },

@@ -14,10 +14,13 @@ const DropDown = ({
   setValue,
   setItems,
   placeholder,
+  disabled,
+  zIndex
 }) => {
   return (
     <LinearGradient colors={['#FF8270', '#821100']} style={{borderRadius: 14, paddingHorizontal: 5}}>
       <DropDownPicker
+        disabled={disabled}
         theme={'DARK'}
         open={open}
         value={value}
@@ -26,6 +29,7 @@ const DropDown = ({
         setValue={setValue}
         setItems={setItems}
         placeholder={placeholder}
+        zIndex={zIndex}
         ArrowDownIconComponent={() => (
           <MaterialIcons name="arrow-drop-down" size={40} color="#fff" />
         )}
