@@ -26,11 +26,14 @@ const PlayerDetails = ({route, navigation}) => {
   };
 
   const navigateTo = () => {
-    let temp = [...players];
-    temp = tempPlayer;
-    setPlayers(temp);
+    if (tempPlayer===null) {
+    } else {
+      let temp = [...players];
+      temp = tempPlayer;
+      setPlayers(temp);
 
-    navigation.navigate('Home');
+      navigation.navigate('Home');
+    }
   };
 
   if (!tempPlayer) return <View />;

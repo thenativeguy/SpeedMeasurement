@@ -27,7 +27,7 @@ const ChoosePlayers = ({navigation}) => {
     setValue(null);
     setPlayers(tempArray);
     if(!value){
-
+      
     }
     else{
       navigation.navigate('Player Details');
@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
   inputTitleTextStyle: {
     fontFamily: LAYOUT.FONTS.BOLD,
     fontSize: 16,
-    marginLeft: 20,
+    marginLeft: 10,
     color: '#000',
+    marginBottom: 20,
   },
 });

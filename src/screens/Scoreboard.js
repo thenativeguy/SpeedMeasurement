@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 import Background from '../components/Global/Background';
 import Header from '../components/Global/Header';
@@ -11,24 +11,21 @@ import {LAYOUT} from '../layout';
 const Scoreboard = ({route, navigation}) => {
   const lap = route.params ? route.params.lap : null;
   const {players, resetState} = useAppContext();
+  const [winnerPlayer, setWinnerPlayer] = useState(null);
 
   useEffect(() => {
     console.log(JSON.stringify(players, null, 1));
     // console.log(JSON.stringify(players.sort(), null, 1))
-    players.map((pl, index) => {
-      pl.results.sort().reverse()
-      console.log(pl.results);
-      // let fastest = []
-      // fastest.push(pl.results[0])
-      // fastest.sort().reverse()
-      // console.log(fastest)
-    });
+    const sorted_by_name = players.sort((a, b) => a.finalResult > b.finalResult);
+    setWinnerPlayer(sorted_by_name[0]);
   }, []);
 
   const navigateTo = screenName => {
     resetState();
     navigation.navigate(screenName);
   };
+
+  if(!winnerPlayer) return <View />
 
   return (
     <Background>
@@ -42,10 +39,12 @@ const Scoreboard = ({route, navigation}) => {
             <Header
               scoreboard
               title="Awesome!"
+              playerName={winnerPlayer.name}
               subTitle="You were fast like a rabbit"
             />
           ) : (
             <Header
+              playerName={winnerPlayer.name}
               scoreboard
               title="Good!"
               subTitle="You were fast like a turtle"
@@ -54,7 +53,7 @@ const Scoreboard = ({route, navigation}) => {
         </View>
         <View style={{marginBottom: LAYOUT.HEIGHT * 0.05}}>
           <Timer
-            interval={lap}
+            interval={winnerPlayer.finalResult}
             style={
               lap < 20000
                 ? styles.timerTextStyle

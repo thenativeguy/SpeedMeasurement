@@ -23,7 +23,7 @@ const HomeStack = () => {
       <StackHome.Screen
         name="Home"
         component={Home}
-        // options={{headerShown: false}}
+        options={{headerShown: false}}
       />
       <StackHome.Screen
         name="Stopwatch"

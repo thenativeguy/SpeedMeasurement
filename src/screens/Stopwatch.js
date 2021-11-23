@@ -53,11 +53,8 @@ const Stopwatch = ({route, navigation}) => {
     // Assing Laps to current playing user
     const temp = [...players];
     temp[selectedPlayerIndex].isComplete = true;
-    temp[selectedPlayerIndex].results = [
-      firstLap + now - start,
-      ...other,
-      laps.reduce((total, curr) => total + curr, 0) + timer,
-    ];
+    temp[selectedPlayerIndex].results = [firstLap + now - start, ...other];
+    temp[selectedPlayerIndex].finalResult = laps.reduce((total, curr) => total + curr, 0) + timer,
     setPlayers(temp);
 
     // Check if players remaining

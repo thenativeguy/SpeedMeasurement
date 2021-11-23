@@ -2,11 +2,12 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import { LAYOUT } from '../../layout';
 
-const Header = ({title, subTitle, scoreboard, register}) => {
+const Header = ({title, subTitle, scoreboard, register, playerName}) => {
   const myStyle = styles(scoreboard, register)
   return (
     <View style={myStyle.main}>
       <Text style={myStyle.firstHeading}>{title}</Text>
+      {playerName && <Text style={myStyle.secondHeading}>{playerName}</Text>}
       <Text style={myStyle.secondHeading}>{subTitle}</Text>
     </View>
   );

@@ -19,7 +19,8 @@ import {useAuthContext} from '../context/AuthContext';
 const Login = ({navigation}) => {
   return (
     <Background>
-      <Header title="Are You" subTitle="fast as a rabbit?" />
+     <View style={{flex:10}}>
+     <Header title="Are You" subTitle="fast as a rabbit?" />
       {/* Input form fields View */}
       <View style={styles.inputTitleMainView}>
         {/* Email */}
@@ -40,7 +41,7 @@ const Login = ({navigation}) => {
         />
 
         {/* Registeration link */}
-        <View style={{marginTop: LAYOUT.HEIGHT * 0.02, flexDirection: 'row'}}>
+        <View style={styles.registerLinkView}>
           <Text style={styles.registerLinkStyle}>No account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text style={styles.registerLinkStyle}> Register here</Text>
@@ -49,6 +50,7 @@ const Login = ({navigation}) => {
         {/* Login Button */}
         <View>
           <LoginButton
+            value
             title={'Login'}
             pressHandler={() => navigation.navigate('Home Stack')}
           />
@@ -56,11 +58,9 @@ const Login = ({navigation}) => {
       </View>
       {/* Logo */}
       <View style={styles.logoView}>
-        <Image
-          source={LAYOUT.LOGO}
-          style={styles.logoStyle}
-        />
+        <Image source={LAYOUT.LOGO} style={styles.logoStyle} />
       </View>
+     </View>
     </Background>
   );
 };
@@ -109,6 +109,10 @@ const styles = StyleSheet.create({
     width: LAYOUT.WIDTH * 0.3,
     height: LAYOUT.WIDTH * 0.1,
   },
+  registerLinkView:{
+    marginTop: LAYOUT.HEIGHT * 0.02,
+    flexDirection: 'row',
+    },
   registerLinkStyle: {
     fontFamily: LAYOUT.FONTS.BOLD,
     fontSize: 16,

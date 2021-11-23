@@ -39,11 +39,14 @@ const Home = ({navigation, route}) => {
   }, [navigation]);
 
   const navigateTo = () => {
-    setGameMode(value);
-    navigation.navigate('Stopwatch', {
-      checkpoint: value,
-      selectedPlayerIndex: selectedPlayer,
-    });
+    if (!value || !selectedPlayer) {
+    } else {
+      setGameMode(value);
+      navigation.navigate('Stopwatch', {
+        checkpoint: value,
+        selectedPlayerIndex: selectedPlayer,
+      });
+    }
   };
 
   if (!playerNameOptions) return <View />;
